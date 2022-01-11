@@ -1,8 +1,7 @@
 'use strict'
 
-// const USERS = require('../mocks/USERS_MOCK_DATA.json')
 const boom = require('@hapi/boom')
-const { models } = require('../lib/sequelize')
+const { models } = require('../lib/sequelize_mysql')
 
 class UserService {
   constructor () {
