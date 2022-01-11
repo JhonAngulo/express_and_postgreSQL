@@ -1,72 +1,60 @@
 'use strict'
 
-const USERS = require('../mocks/USERS_MOCK_DATA.json')
+// const USERS = require('../mocks/USERS_MOCK_DATA.json')
 const boom = require('@hapi/boom')
-const db_connection = require('../lib/postgres_pool')
+const { models } = require('../lib/sequelize')
 
 class UserService {
   constructor () {
-    this.table = USERS
-    this.db_connection = db_connection
+    this.table = 'tasks'
   }
 
   async getAll () {
-    const sql = 'SELECT * FROM tasks'
-    const users = await this.db_connection.query(sql)
-    return users.rows || []
+    const users = await models.User.findAll()
+    return users
   }
 
   async getById ({ id }) {
-    const user = this.table.find(user => user.id === id)
+    const user = await models.User.findByPk(id)
+
     if (!user) {
       throw boom.notFound(`User id ${id} was not found`)
     }
 
-    if (!user.enable) {
-      throw boom.conflict(`User id ${id} was disabled`)
-    }
+    // if (!user.enable) {
+    //   throw boom.conflict(`User id ${id} was disabled`)
+    // }
 
-    return user || {}
+    return user
   }
 
-  async create ({ first_name, last_name, email, gender }) {
-    const newUser = {
-      id: this.table.length + 1,
+  async create ({ first_name, last_name, email, gender, password }) {
+    const newUser = await models.User.create({
       first_name,
       last_name,
       email,
-      gender
-    }
-    this.table.push(newUser)
-    return newUser || []
+      gender,
+      password
+    })
+    return newUser
   }
 
-  async update ({ first_name, last_name, email, gender, id }) {
-    const index = this.table.findIndex(user => user.id === id)
-
-    if (index === -1) {
-      throw boom.notFound(`User id ${id} was not found`)
-    }
-
-    const changes = {
-      ...this.table[index],
+  async update ({ first_name, last_name, email, gender, password, id }) {
+    const user = await this.getById({ id })
+    const rta = await user.update({
       first_name,
       last_name,
       email,
-      gender
-    }
-    this.table[index] = changes
-    return this.table[index] || []
+      gender,
+      password
+    })
+
+    return rta
   }
 
   async delete ({ id }) {
-    const index = this.table.findIndex(user => user.id === id)
-
-    if (index === -1) {
-      throw boom.notFound(`User id ${id} was not found`)
-    }
-
-    this.table.splice(index, 1)
+    const user = await this.getById({ id })
+    await user.destroy()
     return id
   }
 }

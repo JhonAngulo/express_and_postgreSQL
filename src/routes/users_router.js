@@ -32,11 +32,11 @@ router.get('/:id',
 router.post('/',
   validatorHandler(createUserSchema, 'body'),
   async (req, res, next) => {
-    const { first_name, last_name, email, gender } = req.body
+    const { first_name, last_name, email, gender, password } = req.body
 
     try {
       if (first_name && last_name && email && gender) {
-        const user = await userService.create({ first_name, last_name, email, gender })
+        const user = await userService.create({ first_name, last_name, email, gender, password })
         response.success({ req, res, message: 'User created', data: user, status: 201 })
       } else {
         response.success({ req, res, message: 'missing required fields', status: 400 })
@@ -50,12 +50,12 @@ router.put('/:id',
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
   async (req, res, next) => {
-    const { first_name, last_name, email, gender } = req.body
+    const { first_name, last_name, email, gender, password } = req.body
     const { id } = req.params
 
     try {
       if (first_name && last_name && email && gender) {
-        const userUpdate = await userService.update({ first_name, last_name, email, gender, id })
+        const userUpdate = await userService.update({ first_name, last_name, email, gender, password, id })
         response.success({ req, res, message: 'User updated', data: userUpdate })
       } else {
         response.success({ req, res, message: 'Error updating user', status: 400 })
