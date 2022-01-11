@@ -131,3 +131,6 @@ dist
 
 # postgreSQL data volumen info
 postgres_data
+
+# MySQL data volumen info
+mysql_data
