@@ -9,8 +9,10 @@ module.exports = {
     allow_origin: JSON.parse(process.env.ALLOW_ORIGIN)
   },
   db: {
-    db_name: process.env.DB_NAME,
-    db_user: process.env.DB_USER,
-    db_password: process.env.DB_PASSWORD
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD
   }
 }

@@ -2,15 +2,18 @@
 
 const USERS = require('../mocks/USERS_MOCK_DATA.json')
 const boom = require('@hapi/boom')
+const db_connection = require('../lib/postgres_pool')
 
 class UserService {
   constructor () {
     this.table = USERS
+    this.db_connection = db_connection
   }
 
   async getAll () {
-    const users = this.table
-    return users || []
+    const sql = 'SELECT * FROM tasks'
+    const users = await this.db_connection.query(sql)
+    return users.rows || []
   }
 
   async getById ({ id }) {
