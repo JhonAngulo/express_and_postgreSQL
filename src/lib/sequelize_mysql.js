@@ -4,7 +4,7 @@ const { Sequelize } = require('sequelize')
 const { db } = require('../config/variables')
 const setupModels = require('../db/models')
 
-const USER = encodeURIComponent(db.user)
+const USER = encodeURIComponent(db.mySqlUser)
 const PASSWORD = encodeURIComponent(db.password)
 const URI = `mysql://${USER}:${PASSWORD}@${db.host}:${db.mySqlPort}/${db.database}`
 

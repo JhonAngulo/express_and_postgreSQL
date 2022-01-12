@@ -8,6 +8,7 @@ const last_name = Joi.string().alphanum().min(3).max(15)
 const email = Joi.string().email()
 const gender = Joi.equal('Male', 'Female')
 const password = Joi.string().min(8)
+const role = Joi.string()
 
 const getUserSchema = Joi.object({
   id: id.required()
@@ -18,7 +19,8 @@ const createUserSchema = Joi.object({
   last_name: last_name.required(),
   email: email.required(),
   gender: gender.required(),
-  password: password.required()
+  password: password.required(),
+  role: role.required()
 })
 
 const updateUserSchema = Joi.object({
@@ -26,7 +28,8 @@ const updateUserSchema = Joi.object({
   last_name: last_name,
   email: email,
   gender: gender,
-  password: password
+  password: password,
+  role: role
 })
 
 module.exports = {

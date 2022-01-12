@@ -26,6 +26,11 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.STRING
   },
+  role: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: 'customer'
+  },
   enable: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
